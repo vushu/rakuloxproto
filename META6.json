@@ -1,0 +1,16 @@
+{
+  "auth": "zef:vushu",
+  "build-depends": [],
+  "depends": [],
+  "description": "Implementation of lox language in raku",
+  "name": "RakuLox",
+  "provides": {
+    "RakuLox": "lib/RakuLox.rakumod",
+    "RakuLox::Interpreter": "lib/RakuLox/Interpreter.rakumod",
+    "RakuLox::Scanner": "lib/RakuLox/Scanner.rakumod",
+    "RakuLox::Token": "lib/RakuLox/Token.rakumod"
+  },
+  "resources": [],
+  "test-depends": [],
+  "version": "0.0.1"
+}
