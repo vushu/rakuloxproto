@@ -1,0 +1,3 @@
+class RakuLox::Interpreter {
+
+}

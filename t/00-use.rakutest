@@ -1,0 +1,8 @@
+use Test;
+use RakuLox;
+
+plan 1;
+
+use-ok "RakuLox";
+
+run;

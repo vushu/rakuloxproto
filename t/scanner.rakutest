@@ -1,0 +1,13 @@
+use Test;      # a Standard module included with Rakudo 
+use lib 'lib';
+use RakuLox::Scanner;
+
+# plan $;
+sub test-scanner(){
+    "mama"
+}
+my $scanner = Scanner.new;
+ok $scanner.scan, 'Should return a set of tokens';
+# .... tests 
+ 
+done-testing;  # optional with 'plan' 
