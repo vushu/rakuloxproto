@@ -1,7 +1,6 @@
-class RakuLox::Scanner is export {
+use RakuLox::Token;
+class Scanner is export {
     method scan {
-        say("UPUOUOu");
-        return False;
     }
 
     method say-hi($name) {
