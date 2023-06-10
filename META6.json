@@ -8,7 +8,7 @@
     "RakuLox": "lib/RakuLox.rakumod",
     "RakuLox::Interpreter": "lib/RakuLox/Interpreter.rakumod",
     "RakuLox::Scanner": "lib/RakuLox/Scanner.rakumod",
-    "RakuLox::Token": "lib/RakuLox/Token.rakumod"
+    "RakuLox::TokenModule": "lib/RakuLox/Token.rakumod"
   },
   "resources": [],
   "test-depends": [],

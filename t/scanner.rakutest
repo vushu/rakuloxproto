@@ -1,13 +1,17 @@
 use Test;      # a Standard module included with Rakudo 
 use lib 'lib';
+use RakuLox;
 use RakuLox::Scanner;
+use RakuLox::TokenModule;
 
 # plan $;
-sub test-scanner(){
-    "mama"
-}
 my $scanner = Scanner.new;
+# my Token $tok = Token.new(EOF, "Lexeme", Nil, 1);
+my TokenType $tok-type;
+my Token $token = Token.new(type => TokenType::RightParen, lexeme => ")", literal => ")", line => 1);
 ok $scanner.scan, 'Should return a set of tokens';
+
+# my $token = Token.new(EOF, "lexeme", Nil, 1);
 
 # .... tests 
  
