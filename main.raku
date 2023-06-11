@@ -1,4 +1,5 @@
 use lib 'lib';
 
-use RakuLox;
+use Lox;
+
 run();

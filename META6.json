@@ -1,16 +1,17 @@
 {
-  "auth": "zef:vushu",
-  "build-depends": [],
-  "depends": [],
-  "description": "Implementation of lox language in raku",
   "name": "RakuLox",
+  "description": "Implementation of lox language in raku",
+  "version": "0.0.1",
+  "auth": "zef:vushu",
+  "depends": [],
+  "build-depends": [],
+  "test-depends": [],
   "provides": {
-    "RakuLox": "lib/RakuLox.rakumod",
-    "RakuLox::Interpreter": "lib/RakuLox/Interpreter.rakumod",
-    "RakuLox::Scanner": "lib/RakuLox/Scanner.rakumod",
-    "RakuLox::TokenModule": "lib/RakuLox/Token.rakumod"
+    "Lox": "lib/Lox.rakumod",
+    "Lox::Interpreter": "lib/Lox/Interpreter.rakumod",
+    "Lox::Scanner": "lib/Lox/Scanner.rakumod",
+    "Lox::Token": "lib/Lox/Token.rakumod"
   },
   "resources": [],
-  "test-depends": [],
-  "version": "0.0.1"
+  "license": "MIT"
 }

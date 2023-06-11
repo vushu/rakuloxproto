@@ -1,0 +1,14 @@
+use Test;
+# a Standard module included with Rakudo
+use lib 'lib';
+use Lox::Token;
+
+my TokenType $tok-type;
+my Token $token = Token.new(type => TokenType::RightParen, lexeme => ")", literal => ")", line => 1);
+
+ok $token.details, "should show something";
+
+# .... tests
+
+done-testing;
+# optional with 'plan'
