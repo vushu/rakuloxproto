@@ -19,7 +19,7 @@ enum TokenType is export <
     EOF
 
 >;
-subset LiteralType where Str | Bool | Num;
+subset LiteralType where Str | Bool | Num | Nil;
 
 class Token is export {
     has TokenType $.type = EOF;

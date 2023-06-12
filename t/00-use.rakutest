@@ -1,8 +1,8 @@
 use Test;
-use RakuLox;
+use Lox;
 
 plan 1;
 
-use-ok "RakuLox";
+use-ok "Lox";
 
 run;

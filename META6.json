@@ -6,12 +6,7 @@
   "depends": [],
   "build-depends": [],
   "test-depends": [],
-  "provides": {
-    "Lox": "lib/Lox.rakumod",
-    "Lox::Interpreter": "lib/Lox/Interpreter.rakumod",
-    "Lox::Scanner": "lib/Lox/Scanner.rakumod",
-    "Lox::Token": "lib/Lox/Token.rakumod"
-  },
+  "provides": {},
   "resources": [],
   "license": "MIT"
 }

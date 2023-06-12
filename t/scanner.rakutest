@@ -3,8 +3,16 @@ use Test;
 use lib 'lib';
 use Lox::Scanner;
 
-my $scanner = Scanner.new;
-ok $scanner.scan, 'Should return a set of tokens';
+my $source-code = '({}{})';
+my $scanner = Scanner.new(code => $source-code);
+my $tokens = $scanner.scan-tokens;
+
+say "number of tokens {$tokens.elems}";
+say $tokens;
+#ok $tokens, 'Should return a set of tokens';
+cmp-ok $tokens.elems - 1, 'eq' , $source-code.chars, "Should contain the same amount of tokens";
+
+
 
 done-testing;
 # optional with 'plan'
