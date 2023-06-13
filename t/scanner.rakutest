@@ -3,14 +3,14 @@ use Test;
 use lib 'lib';
 use Lox::Scanner;
 
-my $source-code = '({}{})';
+my $source-code = '({}{})!=!\n>=';
 my $scanner = Scanner.new(code => $source-code);
 my $tokens = $scanner.scan-tokens;
 
 say "number of tokens {$tokens.elems}";
 say $tokens;
 #ok $tokens, 'Should return a set of tokens';
-cmp-ok $tokens.elems - 1, 'eq' , $source-code.chars, "Should contain the same amount of tokens";
+cmp-ok $tokens.elems - 1, 'eq' , 9, "Should contain the same amount of tokens";
 
 
 
