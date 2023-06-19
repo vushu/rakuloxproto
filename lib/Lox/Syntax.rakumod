@@ -25,7 +25,7 @@ grammar Operators {
 
 grammar Syntax {
     token TOP { <equality>* }
-    rule equality { <comparison>(('!='|'==') <comparison>)*}
+    rule equality { <comparison>((<tok:sym<bang-equal>>|<tok:sym<equal-equal>>) <comparison>)*}
     rule comparison { <term> (('>'|'>='|'<'|'<=') <term>)*}
     rule term { <factor> (('-'|'+') <factor>)*}
     rule factor { <unary> (('/'|'*') <unary>)*}
@@ -39,10 +39,14 @@ grammar Syntax {
     token number {
         <digit>+('.'<digit>+)?
     }
+
+    proto token tok {*}
+        token tok:sym<bang-equal> { '!=' }
+    token tok:sym<equal-equal> { '==' }
 }
 
 class SyntaxPrinter {
-   method TOP ($/) { make $<equality>.made; }
-   method comparison ($/) { $<comparison>.say}
+   method TOP ($/) { $<equality>.<tok>.say }
+#   method comparison ($/) { $<comparison>.say}
 }
 
