@@ -6,7 +6,9 @@
   "depends": [],
   "build-depends": [],
   "test-depends": [],
-  "provides": {},
+  "provides": {
+    "Lox::Syntax": "lib/Lox/Syntax.rakumod"
+  },
   "resources": [],
   "license": "MIT"
 }
