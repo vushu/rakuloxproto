@@ -41,12 +41,18 @@ grammar Syntax {
     }
 
     proto token tok {*}
-        token tok:sym<bang-equal> { '!=' }
+        token tok:sym<bang-equal> { '!=' e}
     token tok:sym<equal-equal> { '==' }
 }
 
 class SyntaxPrinter {
-   method TOP ($/) { $<equality>.<tok>.say }
+   method TOP ($/) {
+       $<equality>;
+   }
+#   method tok:sym<bang-equal> ($/) { say "(!="; }
+#   method comparison ($/) { $<comparison>.<term> }
+   method tok:sym<bang-equal> ($/) { say "sdfasdfsad"; }
+#
 #   method comparison ($/) { $<comparison>.say}
 }
 
