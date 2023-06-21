@@ -25,33 +25,82 @@ grammar Operators {
 
 grammar Syntax {
     token TOP { <equality>* }
-    rule equality { <comparison>((<tok:sym<bang-equal>>|<tok:sym<equal-equal>>) <comparison>)*}
-    rule comparison { <term> (('>'|'>='|'<'|'<=') <term>)*}
-    rule term { <factor> (('-'|'+') <factor>)*}
-    rule factor { <unary> (('/'|'*') <unary>)*}
-    rule unary {('!' | '-') <unary> | <primary>}
-    rule primary { 'true' | 'false' | 'nil' | 'this' | <number> | <string> | <identifier> |
-    'super''.'<identifier> }
+    rule equality { <comparison>[['!='|'==']<comparison>]*}
+    rule comparison { <term>[[
+        <tok:sym<gt>>|
+        <tok:sym<ge>>|
+        <tok:sym<lt>>|
+        <tok:sym<le>>]<term>]*
+    }
+    rule term { <factor> [['-'|'+'] <factor>]*}
+    rule factor { <unary> [['/'|'*'] <unary>]*}
+    rule unary {['!'| '-'] <unary>|<primary>}
+    rule primary {
+        | 'true'
+        | 'false'
+        | 'nil'
+        | 'this'
+        | <number>
+        | <string>
+        | <identifier>
+        | 'super''.'<identifier>
+    }
     rule string {
+        # todo add except for "
         '"' \w+ '"'
     }
-    token identifier { <alpha> (<alpha> | <digit>)* }
+    token identifier { <alpha>[<alpha>|<digit>]* }
     token number {
-        <digit>+('.'<digit>+)?
+        <digit>+['.'<digit>+]?
     }
 
     proto token tok {*}
-        token tok:sym<bang-equal> { '!=' e}
-    token tok:sym<equal-equal> { '==' }
+    token tok:sym<(> { <sym> }
+    token tok:sym<)> { <sym> }
+    token tok:sym<{> { <sym> }
+    token tok:sym<}> { <sym> }
+    token tok:sym<,> { <sym> }
+    token tok:sym<.> { <sym> }
+    token tok:sym<-> { <sym> }
+    token tok:sym<+> { <sym> }
+    token tok:sym<;> { <sym> }
+    token tok:sym</> { <sym> }
+    token tok:sym<*> { <sym> }
+
+    token tok:sym<!=> { <sym> }
+    token tok:sym<==> { <sym> }
+    token tok:sym<gt> { '>' }
+    token tok:sym<ge> { '>=' }
+    token tok:sym<lt> { '<' }
+    token tok:sym<le> { '<=' }
+    token tok:sym<and> { <sym> }
+    token tok:sym<else> { <sym> }
+    token tok:sym<false> { <sym> }
+    token tok:sym<true> { <sym> }
+    token tok:sym<fun> { <sym> }
+    token tok:sym<for> { <sym> }
+    token tok:sym<if> { <sym> }
+    token tok:sym<nil> { <sym> }
+    token tok:sym<or> { <sym> }
+    token tok:sym<print> { <sym> }
+    token tok:sym<super> { <sym> }
+    token tok:sym<this> { <sym> }
+    token tok:sym<var> { <sym> }
+    token tok:sym<while> { <sym> }
+    token tok:sym<eof> { <sym> }
+
+
 }
 
 class SyntaxPrinter {
    method TOP ($/) {
-       $<equality>;
+#       make $<tok>.made;
    }
 #   method tok:sym<bang-equal> ($/) { say "(!="; }
-#   method comparison ($/) { $<comparison>.<term> }
-   method tok:sym<bang-equal> ($/) { say "sdfasdfsad"; }
+   method equality ($/) {  make ($<tok> $<comparison>).made if $<tok>; }
+#   method comparison ($/) { say $<tok>?? "( {$<tok>} {$<term>})" !! ""; }
+#   method comparison ($/) { say "({$<tok>} {$<term>})"; }
+#   method tok ($/) { make(say "sdfasdfsadfasd"); }
 #
 #   method comparison ($/) { $<comparison>.say}
 }

@@ -4,13 +4,13 @@ use lib 'lib';
 use Lox::Syntax;
 
 #my $found = Syntax.parse('2>=2');
-my $match = Syntax.parse('2!=2', actions => SyntaxPrinter);
+my $match = Syntax.parse('2!=5 23==12 false>true while for', actions => SyntaxPrinter);
 #say $found<equality>[0]<comparison>[0][];
-say $match;
+say $match.<comparison>;
 say "-----------------------------";
-say $match.made;
+#say $match.made;
 
-ok True, "should parse something";
+ok $match, "should parse something";
 
 # .... tests
 
