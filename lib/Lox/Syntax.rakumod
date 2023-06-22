@@ -1,28 +1,3 @@
-grammar Operators {
-    token TOP { <equality>* }
-    #    proto token tok {*}
-    #    token operator:sym<false> { <sym> }
-    #    token operator:sym<true> { <sym> }
-    #    token operator:sym<,> { <sym> }
-    token equality { <factor> }
-    rule factor { <unary> <slash> <unary>               | <unary> <star> <unary>  }
-    rule unary { <minus> <unary>               | <bang> <unary>               | <primary>  }
-
-    token primary { <false> | <true> | <nil> | <identifier> }
-
-
-    token plus { '+' }
-    token minus { '-' }
-    token bang { '!' }
-    token nil { 'nil' }
-    token false { 'false' }
-    token true { 'true' }
-    token slash { '/' }
-    token star { '*' }
-    token identifier { \w+ | \d+ }
-
-}
-
 grammar Syntax {
     token TOP { <equality>* }
     rule equality { <comparison>[['!='|'==']<comparison>]*}
@@ -32,9 +7,9 @@ grammar Syntax {
         <tok:sym<lt>>|
         <tok:sym<le>>]<term>]*
     }
-    rule term { <factor> [['-'|'+'] <factor>]*}
-    rule factor { <unary> [['/'|'*'] <unary>]*}
-    rule unary {['!'| '-'] <unary>|<primary>}
+    rule term { <factor>('-'|'+'<factor>)*}
+    rule factor { <unary>(['/'|'*']<unary>)*}
+    rule unary {[<tok:sym<!>>|<tok:sym<->>][<unary>|<primary>]}
     rule primary {
         | 'true'
         | 'false'
@@ -49,11 +24,15 @@ grammar Syntax {
         # todo add except for "
         '"' \w+ '"'
     }
+#    token unary-tok {'!'|'-'}
     token identifier { <alpha>[<alpha>|<digit>]* }
     token number {
         <digit>+['.'<digit>+]?
     }
 
+    token unary-tok { ['!'|'-'] }
+
+    token fact-tok {['/'|'*']}
     proto token tok {*}
     token tok:sym<(> { <sym> }
     token tok:sym<)> { <sym> }
@@ -63,9 +42,10 @@ grammar Syntax {
     token tok:sym<.> { <sym> }
     token tok:sym<-> { <sym> }
     token tok:sym<+> { <sym> }
+    token tok:sym<!> { <sym> }
     token tok:sym<;> { <sym> }
-    token tok:sym</> { <sym> }
-    token tok:sym<*> { <sym> }
+#    token tok:sym</> { <sym> }
+#    token tok:sym<*> { <sym> }
 
     token tok:sym<!=> { <sym> }
     token tok:sym<==> { <sym> }
@@ -94,14 +74,69 @@ grammar Syntax {
 
 class SyntaxPrinter {
    method TOP ($/) {
-#       make $<tok>.made;
+       $<equality>;
+#       $<term>.made;
    }
-#   method tok:sym<bang-equal> ($/) { say "(!="; }
-   method equality ($/) {  make ($<tok> $<comparison>).made if $<tok>; }
-#   method comparison ($/) { say $<tok>?? "( {$<tok>} {$<term>})" !! ""; }
+
+   method term ($/) { $<factor> }
+
+   method factor ($/) {
+        say "lololo0000000000000";
+#            say $<primary>;
+   } #   method tok:sym<bang-equal> ($/) { say "(!="; }
+#   method equality ($/) { say ($<tok>, $<comparison>); }
+#   method equality ($/) { $<comparison>; }
+#   method comparison ($/) { $<term>; }
+#   method term ($/) { $<factor>; }
+#   method factor ($/) { $<unary>; }
+#   method unary ($/) { $<unary> | $<primary>; }
+#   method primary ($/) { $<unary> | $<identifier>; }
+#   method identifier ($/) { $<unary> | $<number> | $<identifier>; }
+#   method tok:sym<add> ($/) { make [+] $<number>;}
+   #   method comparison ($/) { say $<tok>?? "( {$<tok>} {$<term>})" !! ""; }
 #   method comparison ($/) { say "({$<tok>} {$<term>})"; }
 #   method tok ($/) { make(say "sdfasdfsadfasd"); }
 #
 #   method comparison ($/) { $<comparison>.say}
+}
+
+grammar Lox {
+    token TOP { <term> }
+    rule term { <factor>('-'|'+'<factor>)*}
+    rule factor { <unary>(['/'|'*']<unary>)*}
+    rule unary {('!'|'-')[<unary>|<primary>]}
+    rule primary {
+        | 'true'
+        | 'false'
+        | 'nil'
+        | 'this'
+        | <number>
+        | <string>
+        | <identifier>
+        | 'super''.'<identifier>
+    }
+    rule string {
+        # todo add except for "
+        '"' \w+ '"'
+    }
+    #    token unary-tok {'!'|'-'}
+    token identifier { <alpha>[<alpha>|<digit>]* }
+    token number {
+        <digit>+['.'<digit>+]?
+    }
+#    token tok { | '==' }
+}
+
+class LoxInterpreter {
+    method TOP ($/) { make $<binary-op>.made}
+    method binary-op:sym<equality> ($/)
+    {
+        my $t = $<tok>.Str;
+        if $t eq "!=" {
+            make [!=] $<num>;
+        } else {
+            make [==] $<num>;
+        }
+    }
 }
 
