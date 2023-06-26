@@ -2,19 +2,50 @@ use Test;
 # a Standard module included with Rakudo
 use lib 'lib';
 use Lox::Syntax;
+#ok Lox.parse('-2')<unary> eq -2, "should parse something";
 
-#my $found = Syntax.parse('2>=2');
-#my $match = Lox.parse('2-2', actions => LoxInterpreter).made;
-my $match = Lox.parse('2-2');
-#say $found<equality>[0]<comparison>[0][];
-say "-----------------------------";
-say "res ", $match;
-say "-----------------------------";
-#say $match.made;
-
-ok $match, "should parse something";
-
+#ok Lox.parse('2*2-3').say, "should parse something";
+#ok Lox.parse('-3').say, "should parse something";
+#
+#ok Lox.parse('-3>=3').say, "should parse something";
+#ok Lox.parse('-3>3').say, "should parse something";
+#ok Lox.parse('-3<3').say, "should parse something";
+#ok Lox.parse('-3<=3+321').say, "should parse something";
+#ok Lox.parse('2-3').say, "should parse something";
+#ok Lox.parse('2 or 3').say, "should parse something";
+#say Lox.parse('-2', actions => LoxInterpreter);
+say "result is: ", Lox.parse('-2', actions => LoxInterpreter);
+say "result is: ", Lox.parse('3-2', actions => LoxInterpreter);
+#say Lox.parse('2 - 3', actions => LoxInterpreter);
+#my $found = Lox.parse('2 - 3', actions => LoxInterpreter).made;
+#say "----------";
+#say $found;
+#say "----------";
+#say "----------";
+#say "----------";
+#say "----------";
+#say $found.made;
+#say "----------";
 # .... tests
+# .... tests
+
+grammar Calculator {
+    token TOP { <calc-op> }
+
+    proto rule calc-op          {*}
+    rule calc-op:sym<add> { <num> '+' <num> }
+    rule calc-op:sym<sub> { <num> '-' <num> }
+
+    token num { \d+ }
+}
+
+class Calculations {
+    method TOP              ($/) { make $<calc-op>.made; }
+    method calc-op:sym<add> ($/) { make [+] $<num>; }
+    method calc-op:sym<sub> ($/) { make [-] $<num>; }
+}
+
+say Calculator.parse('2 + 3', actions => Calculations).made;
 
 done-testing;
 # optional with 'plan'

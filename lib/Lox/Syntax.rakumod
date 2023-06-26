@@ -101,11 +101,21 @@ class SyntaxPrinter {
 }
 
 grammar Lox {
-    token TOP { <term> }
-    rule term { <factor>('-'|'+'<factor>)*}
-    rule factor { <unary>(['/'|'*']<unary>)*}
-    rule unary {('!'|'-')[<unary>|<primary>]}
-    rule primary {
+    token TOP { <logic-compare> }
+    rule logic-compare { <equality>+ % ['or'|'and'] }
+    rule equality { <comparison>+ % ['!='|'=='] }
+    rule comparison { <term>+ % ['>='|'>'|'<='|'<'] }
+    #    rule factor { <unary>+ % ['/'|'*'] }
+    rule term { <factor>+ % ('-'|'+') }
+
+    proto rule factor { * }
+    rule factor:sym<slash> { <unary> ('/' <unary>)? }
+    rule factor:sym<star> {<unary> ('*' <unary>)? }
+#    rule factor { <unary>+ % ['/'|'*'] }
+    proto rule unary { * }
+    rule unary:sym<bang> { '!' <unary>|<primary> }
+    rule unary:sym<minus> { '-' <unary>|<primary> }
+    token primary {
         | 'true'
         | 'false'
         | 'nil'
@@ -124,19 +134,16 @@ grammar Lox {
     token number {
         <digit>+['.'<digit>+]?
     }
-#    token tok { | '==' }
 }
 
 class LoxInterpreter {
-    method TOP ($/) { make $<binary-op>.made}
-    method binary-op:sym<equality> ($/)
-    {
-        my $t = $<tok>.Str;
-        if $t eq "!=" {
-            make [!=] $<num>;
-        } else {
-            make [==] $<num>;
-        }
-    }
+
+    method TOP ($/) { make $<unary>.made; }
+
+    method unary:sym<minus>  ($/) {
+        make -$/; }
+#    method unary:sym<bang>  ($/) { make $/; }
+
+#    method primary ($/) { make $<number>.made; };
 }
 
