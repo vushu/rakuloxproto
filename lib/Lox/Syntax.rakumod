@@ -101,17 +101,34 @@ class SyntaxPrinter {
 }
 
 grammar Lox {
-    token TOP { <logic-compare> }
-    rule logic-compare { <equality>+ % ['or'|'and'] }
-    rule equality { <comparison>+ % ['!='|'=='] }
-    rule comparison { <term>+ % ['>='|'>'|'<='|'<'] }
-    #    rule factor { <unary>+ % ['/'|'*'] }
-    rule term { <factor>+ % ('-'|'+') }
+    token TOP { <statement>+  }
+#    rule logic-compare { <equality>+ % <op> }
+#    rule equality { <comparison>+ % <op> }
+#    #rule comparison { <term>+ % ['>='|'>'|'<='|'<'] }
+#    rule comparison { <term>+ % <op> }
+##    rule term { <factor>+ % ['-'|'+'] }
+#    rule term { <factor>+ % <op> }
+#    rule factor { <unary>+ % <op> }
 
-    proto rule factor { * }
-    rule factor:sym<slash> { <unary> ('/' <unary>)? }
-    rule factor:sym<star> {<unary> ('*' <unary>)? }
-#    rule factor { <unary>+ % ['/'|'*'] }
+    rule statement { <expression>+ % <op> }
+    rule expression { <unary>+ % <op> }
+
+    proto token op { * }
+    token op:sym<or> { <sym> }
+    token op:sym<and> { <sym> }
+    token op:sym<!=> { <sym> }
+    token op:sym<==> { <sym> }
+    token op:sym<\>=> { <sym> }
+    token op:sym<\>> { <sym> }
+    token op:sym<\<=> { <sym> }
+    token op:sym<\<> { <sym> }
+    token op:sym<-> { <sym> }
+    token op:sym<+> { <sym> }
+    token op:sym</> { <sym> }
+    token op:sym<*> { <sym> }
+
+
+    #    rule factor { <unary>+ % ['/'|'*'] }
     proto rule unary { * }
     rule unary:sym<bang> { '!' <unary>|<primary> }
     rule unary:sym<minus> { '-' <unary>|<primary> }
