@@ -14,7 +14,7 @@ ok Lox.parse('-3>3'), "should parse something";
 #ok Lox.parse('-3<3').say, "should parse something";
 ok Lox.parse('-3<=3+321'), "should parse something";
 #ok Lox.parse('2-3').say, "should parse something";
-ok Lox.parse('2 or 3').say, "should parse something";
+ok Lox.parse('a or b').say, "should parse something";
 say Lox.parse('-2', actions => LoxInterpreter);
 #say "result is: ", Lox.parse('-2', actions => LoxInterpreter);
 #say "result is: ", Lox.parse('3-2', actions => LoxInterpreter);
