@@ -15,11 +15,12 @@ grammar Lox {
         | '+'
         | '/'
         | '*'
+        | '!'
     }
 
     proto rule unary { * }
-    rule unary:sym<bang> { '!' <unary>|<primary> }
-    rule unary:sym<minus> { '-' <unary>|<primary> }
+    rule unary:sym<bang> { <operator> <unary>|<primary> }
+    rule unary:sym<minus> { <operator> <unary>|<primary> }
     token primary {
         | 'true'
         | 'false'
@@ -42,10 +43,12 @@ grammar Lox {
 
 class LoxInterpreter {
 
-    method TOP ($/) { make $<unary>.made; }
+    method TOP ($/) { make $<expression>.made; }
 
-    method unary:sym<minus>  ($/) {
-        make -$/;
+#    method statement ($/) { $<expression>; }
+    method expression ($/) {
+        say "saying stuff", $<unary>;
+        make [*] $<unary>;
     }
 }
 
