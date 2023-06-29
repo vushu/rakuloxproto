@@ -18,7 +18,7 @@ use Lox::Syntax;
 #say Lox.parse('-2', actions => LoxInterpreter);
 #say "result is: ", Lox.parse('-2', actions => LoxInterpreter);
 #say "result is: ", Lox.parse('3-2', actions => LoxInterpreter);
-say Lox.parse('2*3', actions => LoxInterpreter).made;
+say Lox.parse('6*3', actions => LoxInterpreter).made;
 #say "----------";
 #say $found;
 #say ($found.made);

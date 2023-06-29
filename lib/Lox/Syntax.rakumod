@@ -47,8 +47,22 @@ class LoxInterpreter {
 
 #    method statement ($/) { $<expression>; }
     method expression ($/) {
-        say "saying stuff", $<unary>;
+#        say "saying stuff", $<unary>;
         make [*] $<unary>;
     }
+    method unary:sym<bang> ($/) {
+#        say "mamamamj ! " , $<primary> ;
+        make  !$/.Int;
+    }
+
+    method unary:sym<minus> ($/) {
+        say "mamamamj - ;";
+        make -$/;
+    }
+
+    method primary($/) {
+        make $/.Int;
+    }
+
 }
 
