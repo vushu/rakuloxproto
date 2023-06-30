@@ -1,68 +1,54 @@
 grammar Lox {
-    token TOP { <statement>+  }
-    rule statement { <expression>+ % <operator> }
-    rule expression { <unary>+ % <operator> }
-    token operator {
-        | 'or'
-        | 'and'
-        | '!='
-        | '=='
-        | '>='
-        | '>'
-        | '<='
-        | '<'
-        | '-'
-        | '+'
-        | '/'
-        | '*'
-        | '!'
-    }
-
+    token TOP { <unary>+  }
     proto rule unary { * }
-    rule unary:sym<bang> { <operator> <unary>|<primary> }
-    rule unary:sym<minus> { <operator> <unary>|<primary> }
-    token primary {
-        | 'true'
-        | 'false'
-        | 'nil'
-        | 'this'
-        | <number>
-        | <string>
-        | <identifier>
-        | 'super''.'<identifier>
-    }
+#    rule unary:sym<bang> { '!' <unary>|<primary> }
+    rule unary:sym<minus> { '-' <primary> }
+
+    proto token primary { * }
+    token primary:sym<number> { <number> }
+
+#    token primary {
+#        | 'true'
+#        | 'false'
+#        | 'nil'
+#        | 'this'
+#        | <number>
+#        | <string>
+#        | <identifier>
+#        | 'super''.'<identifier>
     rule string {
         # todo add except for "
         '"' \w+ '"'
     }
     token identifier { <alpha>[<alpha>|<digit>]* }
     token number {
-        <digit>+['.'<digit>+]?
+#        <digit>+['.'<digit>+]?
+        \d+
     }
 }
 
 class LoxInterpreter {
 
-    method TOP ($/) { make $<expression>.made; }
+    method TOP ($/) { make $<unary>; }
 
-#    method statement ($/) { $<expression>; }
-    method expression ($/) {
-#        say "saying stuff", $<unary>;
-        make [*] $<unary>;
-    }
     method unary:sym<bang> ($/) {
-#        say "mamamamj ! " , $<primary> ;
         make  !$/.Int;
     }
 
     method unary:sym<minus> ($/) {
-        say "mamamamj - ;";
-        make -$/;
+        say $/, " <- ";
+        make [-] $/, 0;
     }
 
-    method primary($/) {
-        make $/.Int;
-    }
+#    method primary:sym<number>($/) {
+#        say "hererere $/";
+#        make [+] $/, 1;
+#    }
+
+#    method number ($/) {
+#        say "number herer";
+#    }
+
 
 }
 
